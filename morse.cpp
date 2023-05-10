@@ -6,103 +6,106 @@
 
 Morse::Morse()
 {
-    root=NULL;
+    root= nullptr;
 }
 
-void destroy_Morse(node *root)
+void Destroy_Morse(node *root)
 {
-    if(root!=NULL)
+    if(root!= nullptr)
     {
-        destroy_Morse(root->left);
-        destroy_Morse(root->right);
+        Destroy_Morse(root->left);
+        Destroy_Morse(root->right);
         delete root;
     }
 }
 
-node* Morse::insert(char key){
+node* Morse::Insert(char MorseSignals){
     node* Node=new node();
-    Node->data=key;
-    Node->left=NULL;
-    Node->right=NULL;
+    Node->data=MorseSignals;
+    Node->left= nullptr;
+    Node->right= nullptr;
     return (Node);
 }
 
 void Morse::init(){
-    root=insert(' ');
+    root=Insert(' ');
     //level 1
-    root->left = insert('e');
-    root->right = insert('t');
+    root->left = Insert('e');
+    root->right = Insert('t');
     //level 2
-    root->left->left = insert('i');
-    root->left->right = insert('a');
-    root->right->left = insert('n');
-    root->right->right = insert('m');
+    root->left->left = Insert('i');
+    root->left->right = Insert('a');
+    root->right->left = Insert('n');
+    root->right->right = Insert('m');
     //level 3
-    root->left->left->left = insert('s');
-    root->left->left->right = insert('u');
-    root->left->right->left = insert('r');
-    root->left->right->right = insert('w');
-    root->right->left->left = insert('d');
-    root->right->left->right = insert('k');
-    root->right->right->left = insert('g');
-    root->right->right->right = insert('o');
+    root->left->left->left = Insert('s');
+    root->left->left->right = Insert('u');
+    root->left->right->left = Insert('r');
+    root->left->right->right = Insert('w');
+    root->right->left->left = Insert('d');
+    root->right->left->right = Insert('k');
+    root->right->right->left = Insert('g');
+    root->right->right->right = Insert('o');
     //level 4
-    root->left->left->left->left = insert('h');
-    root->left->left->left->right = insert('v');
-    root->left->left->right->left = insert('f');
-    root->left->right->left->left = insert('l');
-    root->left->right->right->left = insert('p');
-    root->left->right->right->right = insert('j');
-    root->right->left->left->left = insert('b');
-    root->right->left->left->right = insert('x');
-    root->right->left->right->left = insert('c');
-    root->right->left->right->right = insert('y');
-    root->right->right->left->left = insert('z');
-    root->right->right->left->right = insert('q');
+    root->left->left->left->left = Insert('h');
+    root->left->left->left->right = Insert('v');
+    root->left->left->right->left = Insert('f');
+    root->left->right->left->left = Insert('l');
+    root->left->right->right->left = Insert('p');
+    root->left->right->right->right = Insert('j');
+    root->right->left->left->left = Insert('b');
+    root->right->left->left->right = Insert('x');
+    root->right->left->right->left = Insert('c');
+    root->right->left->right->right = Insert('y');
+    root->right->right->left->left = Insert('z');
+    root->right->right->left->right = Insert('q');
 }
 
-void Morse::find(struct node* root, queue<char>& key,int& first,int& dot){
-    if(key.empty() && dot==2){
+void Morse::Find(struct node* root, queue<char>& MorseSignals,int& first,int& slash){
+    //konec vety
+    if(MorseSignals.empty() && slash==2){
         cout<<".";
         cout<<root->data;
         first=1;
     }
-    if(!key.empty() && dot==2){
+    if(!MorseSignals.empty() && slash==2){
         cout<<root->data;
     }
-    while(!key.empty()){
-        if(key.front()=='.'){
+    //posun BT k vyhledani daneho pismene
+    while(!MorseSignals.empty()){
+        if(MorseSignals.front()=='.'){
             root=root->left;
-            key.pop();
+            MorseSignals.pop();
         }
-        if(key.front()=='-'){
+        if(MorseSignals.front()=='-'){
             root=root->right;
-            key.pop();
+            MorseSignals.pop();
         }
-        if (key.empty() && first==0)
+        //osetreni velkeho pismene na zacatku vety
+        if (MorseSignals.empty() && first==0)
             cout<< root->data;
-        dot=0;
-        if (key.empty() && first==1){
+        if (MorseSignals.empty() && first==1){
             cout<<(char) toupper(root->data);
             first=0;
         }
+        slash=0;
     }
 }
 
-void Morse::solve(){
-    queue<char> key;
-    string Text;
-    ifstream In("morse.txt");
+void Morse::Solve(string file){
+    queue<char> MorseSignals;
+    ifstream In(file);
     char c;
-    int first=1;
-    int dot=0;
+    int first=1, slash=0;
+    //while loop, ktery cte postupne vsechny znaky
     while (In>>c) {
         if(c =='/'){
-            dot++;
-            find(root,key,first,dot);
+            slash++;
+            Find(root,MorseSignals,first,slash);
         }
+        //pridani . nebo - do fronty
         if(c != '/')
-            key.push(c);
+            MorseSignals.push(c);
     }
     In.close();
 }
