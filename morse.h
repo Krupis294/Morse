@@ -1,6 +1,7 @@
-//
-// Created by Jakub Lengsfeld on 04.04.2023.
-//
+/**
+ * @author Jakub Lengsfeld
+ * @date 04.04.2023
+ */
 #pragma once
 #include <iostream>
 #include <fstream>
@@ -14,14 +15,13 @@ using namespace std;
  * @param left posun do leve vetve v BT
  * @param right posun do prava vetve v BT
  */
-struct node{
+struct node {
     char data;
     node *left;
     node *right;
 };
 
-class Morse
-{
+class Morse {
 public:
     Morse();
     node* root;
@@ -52,10 +52,9 @@ public:
      *  @param slash pocet lomitek
      */
     static void Find(struct node* root, queue<char>& MorseSignals, int& first, int& slash);
-
 };
 
-/*
+/**
  *  Uvolneni pameti
  */
 void Destroy_Morse(node *root);
