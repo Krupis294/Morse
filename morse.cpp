@@ -16,9 +16,9 @@ void Destroy_Morse(node *root) {
     }
 }
 
-node* Morse::Insert(char MorseSignals) {
+node* Morse::Insert(char key) {
     node* Node = new node();
-    Node->data = MorseSignals;
+    Node->data = key;
     Node->left = nullptr;
     Node->right = nullptr;
     return (Node);
